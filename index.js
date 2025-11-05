@@ -1,7 +1,6 @@
 const express = require("express")
 const cors = require("cors")
 const dbConnect = require("./DataBaseConfig/DataBaseConfig")
-const dbConnect = require("./DataBaseConfig/DataBaseConfig")
 const adminsRouter = require("./Routes/AdminsRoute")
 const restaurantRouter = require("./Routes/RestaurantsRoute")
 const productRouter = require("./Routes/ProductRoute")
