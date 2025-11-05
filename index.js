@@ -24,4 +24,6 @@ app.use("/admins", adminsRouter)
 app.use("/restaurants", restaurantRouter)
 app.use("/products", productRouter)
 
-module.exports.handler = serverless(app);
+app.listen(PORT, () => {
+    console.log(`http://localhost:${PORT}`);
+})
