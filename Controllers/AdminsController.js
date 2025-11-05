@@ -74,7 +74,10 @@ const deleteAdmin = async (req, res) => {
         return res.status(400).json({ message: "Id required" })
     }
     try {
-        await adminsSchema.findByIdAndDelete(adminId)
+        const deletedAdmin = await adminsSchema.findByIdAndDelete(adminId)
+        if (!deletedAdmin) {
+            return res.status(404).json({ message: "No Admin found" })
+        }
         res.status(200).json({ message: "admin deleted sucessfully" })
     } catch (error) {
         console.error(error);
@@ -90,7 +93,10 @@ const updateAdmin = async (req, res) => {
     }
     try {
         const hashPassword = await bcrypt.hash(password, 10)
-        await adminsSchema.findByIdAndUpdate(adminId, { username, email, password: hashPassword }, { new: true })
+        const updatedAdmin = await adminsSchema.findByIdAndUpdate(adminId, { username, email, password: hashPassword }, { new: true })
+        if (!updatedAdmin) {
+            return res.status(404).json({ message: "No item found" })
+        }
         res.status(201).json({ message: "admin updated sucessfully" })
     } catch (error) {
         console.error(error);

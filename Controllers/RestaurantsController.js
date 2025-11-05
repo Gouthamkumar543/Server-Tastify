@@ -75,7 +75,14 @@ const deleteRestaurant = async (req, res) => {
         return res.status(400).json({ message: "Id required" })
     }
     try {
-        await restaurantsSchema.findByIdAndDelete(resturantId)
+        const deletedRestaurant = await restaurantsSchema.findByIdAndDelete(resturantId)
+        if (!deletedRestaurant) {
+            return res.status(404).json({ message: "no restaurant found" })
+        }
+        await adminsSchema.updateMany(
+            { restaurants: resturantId },
+            { $pull: { restaurants: resturantId } }
+        )
         res.status(200).json({ message: "deleted sucessfully" })
     } catch (error) {
         console.error(error);
@@ -92,7 +99,10 @@ const updateRestaurant = async (req, res) => {
     }
     try {
         const image = await cloudinary.uploader.upload(file.path)
-        await restaurantsSchema.findByIdAndUpdate(resturantId, { restaurantname, location, category, type, image: image.secure_url }, { new: true })
+        const updatedRestaurant = await restaurantsSchema.findByIdAndUpdate(resturantId, { restaurantname, location, category, type, image: image.secure_url }, { new: true })
+        if (!updatedRestaurant) {
+            return res.status(404).json({ message: "No item found" })
+        }
         res.status(201).json({ message: "updated sucessfully" })
     } catch (error) {
         console.error(error);

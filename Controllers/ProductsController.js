@@ -1,6 +1,6 @@
 const productsSchema = require("../Models/ProductsSchema")
 const multer = require("multer")
-const ReastaurantsSchema = require("../Models/ReastaurantsSchema")
+const reastaurantsSchema = require("../Models/ReastaurantsSchema")
 const cloudinary = require("cloudinary").v2
 require("dotenv").config()
 
@@ -23,7 +23,7 @@ const productsDetails = async (req, res) => {
     const resturantId = req.params.id
     const file = req.file
     try {
-        const findRestaurant = await ReastaurantsSchema.findById(resturantId)
+        const findRestaurant = await reastaurantsSchema.findById(resturantId)
         if (!findRestaurant) {
             return res.status(404).json({ message: "Restaurant not found" })
         }
@@ -74,7 +74,14 @@ const deleteProduct = async (req, res) => {
         return res.status(404).json({ message: "Id required" })
     }
     try {
-        await productsSchema.findByIdAndDelete(productId)
+        const deletedProduct = await productsSchema.findByIdAndDelete(productId)
+        if (!deletedProduct) {
+            return res.status(404).json({ message: "No item found" })
+        }
+        await reastaurantsSchema.updateMany(
+            { products: productId },
+            { $pull: { products: productId } }
+        )
         res.status(200).json({ message: "deleted sucessfully" })
     } catch (error) {
         console.error(error);
@@ -91,7 +98,10 @@ const updateProduct = async (req, res) => {
     }
     try {
         const image = await cloudinary.uploader.upload(file.path)
-        await productsSchema.findByIdAndUpdate(productId, { name, price, description, rating, image: image.secure_url }, { new: true })
+        const updatedProduct = await productsSchema.findByIdAndUpdate(productId, { name, price, description, rating, image: image.secure_url }, { new: true })
+        if (!updatedProduct) {
+            return res.status(404).json({ message: "No item found" })
+        }
         res.status(201).json({ message: "updated sucessfully" })
     } catch (error) {
         console.error(error);
