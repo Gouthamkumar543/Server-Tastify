@@ -17,6 +17,9 @@ app.use(cors())
 
 dbConnect()
 
+app.use("/",(req,res)=>{
+    res.send("Welcome to server")
+})
 app.use("/admins", adminsRouter)
 app.use("/restaurants", restaurantRouter)
 app.use("/products", productRouter)
