@@ -6,7 +6,7 @@ const restaurantRouter = require("./Routes/RestaurantsRoute")
 const productRouter = require("./Routes/ProductRoute")
 require("dotenv").config()
 
-PORT = process.env.PORT
+PORT = process.env.PORT || 7000
 
 const app = express()
 
