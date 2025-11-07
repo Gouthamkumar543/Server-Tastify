@@ -31,7 +31,7 @@ const adminLogIn = async (req, res) => {
     try {
         const findAdmin = await adminsSchema.findOne({ email })
         if (!findAdmin || !(await bcrypt.compare(password, findAdmin.password))) {
-            return res.status(404).json({ message: "Invalid crendentials" })
+            return res.status(401).json({ message: "Invalid crendentials" })
         }
         const token = jwt.sign({ adminId: findAdmin._id }, secretKey, { expiresIn: "24h" })
         res.status(200).json({ message: "Login sucessfull", token })
