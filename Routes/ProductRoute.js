@@ -1,6 +1,6 @@
 const express = require("express")
 const { productsDetails, singleProduct, getData, deleteProduct, updateProduct } = require("../Controllers/ProductsController")
-const { uploads } = require("../Controllers/RestaurantsController")
+const { uploads } = require("../Controllers/ProductsController")
 const router = express.Router()
 
 router.get("/", getData)
