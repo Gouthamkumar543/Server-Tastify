@@ -35,9 +35,10 @@ const reastaurantsDetails = async (req, res) => {
             image: image.secure_url
         })
         const savedRestaurant = await newRestaurant.save()
+        const restaurantId = savedRestaurant._id
         findAdmin.restaurants.push(savedRestaurant)
         await findAdmin.save()
-        res.status(201).json({ message: "Restaurant added sucessfully" })
+        res.status(201).json({ message: "Restaurant added sucessfully", restaurantId })
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Internal server error" })
