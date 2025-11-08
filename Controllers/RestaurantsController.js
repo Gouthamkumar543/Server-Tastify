@@ -26,6 +26,9 @@ const reastaurantsDetails = async (req, res) => {
         if (!findAdmin) {
             return res.status(404).json({ message: "no admin found" })
         }
+        if(findAdmin.restaurants.length > 0){
+            return res.status(400).json({ message: "restaurant already exists" })
+        }
         const image = await cloudinary.uploader.upload(file.path)
         const newRestaurant = new restaurantsSchema({
             restaurantname,

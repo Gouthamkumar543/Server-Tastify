@@ -34,7 +34,8 @@ const adminLogIn = async (req, res) => {
             return res.status(401).json({ message: "Invalid crendentials" })
         }
         const token = jwt.sign({ adminId: findAdmin._id }, secretKey, { expiresIn: "24h" })
-        res.status(200).json({ message: "Login sucessfull", token })
+        const adminId = findAdmin._id
+        res.status(200).json({ message: "Login sucessfull", token, adminId })
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Internal server error" })
@@ -61,7 +62,8 @@ const singleAdmin = async (req, res) => {
         if (!singleAdmin) {
             return res.status(404).json({ message: "No admin found with the id" })
         }
-        res.status(200).json(singleAdmin)
+        const restaurantId = singleAdmin.restaurants[0]._id
+        res.status(200).json(singleAdmin, restaurantId)
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Internal server error" })
