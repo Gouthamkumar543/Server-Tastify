@@ -63,7 +63,7 @@ const singleAdmin = async (req, res) => {
             return res.status(404).json({ message: "No admin found with the id" })
         }
         const restaurantId = singleAdmin.restaurants[0]._id
-        res.status(200).json({ restaurantId })
+        res.status(200).json({ singleAdmin, restaurantId })
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Internal server error" })
