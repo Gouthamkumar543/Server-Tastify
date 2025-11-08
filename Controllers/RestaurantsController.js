@@ -35,7 +35,7 @@ const reastaurantsDetails = async (req, res) => {
             image: image.secure_url
         })
         const savedRestaurant = await newRestaurant.save()
-        findAdmin.resturants.push(savedRestaurant)
+        findAdmin.restaurants.push(savedRestaurant)
         await findAdmin.save()
         res.status(201).json({ message: "Restaurant added sucessfully" })
     } catch (error) {
